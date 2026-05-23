@@ -4,14 +4,122 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Movie Watchlist{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        header {
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        header h1 {
+            margin: 0 0 15px 0;
+            font-weight: 600;
+        }
+        header nav a {
+            color: #ecf0f1;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: 400;
+            transition: color 0.3s;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        header nav a:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 600;
+            transition: background 0.3s, transform 0.1s;
+        }
+        button:hover {
+            background: #2980b9;
+        }
+        button:active {
+            transform: scale(0.97);
+        }
+        input[type="text"] {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-family: inherit;
+            width: 250px;
+            transition: border-color 0.3s;
+        }
+        input[type="text"]:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        a {
+            color: #3498db;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .flashes {
+            list-style: none;
+            padding: 15px;
+            background: #d4edda;
+            color: #155724;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #c3e6cb;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .content-box {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        /* Nowa klasa dla kart z filmami */
+        .movie-card {
+            display: flex;
+            align-items: center;
+            background: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+            border: 1px solid #f0f0f0;
+            transition: transform 0.2s;
+        }
+        .movie-card:hover {
+            transform: translateY(-2px);
+        }
+    </style>
 </head>
 <body>
     <header>
         <h1>Movie Watchlist</h1>
-        <a href="{{ url_for('web.index') }}">Home</a>
-        <a href="{{ url_for('web.ping_db') }}">Test Bazy (Ping)</a>
-        <a href="{{ url_for('web.list_movies') }}">Lista filmów</a>
+        <nav>
+            <a href="{{ url_for('web.index') }}">Home</a>
+            <a href="{{ url_for('web.ping_db') }}">Test Bazy (Ping)</a>
+            <a href="{{ url_for('web.list_movies') }}">Lista filmów</a>
+        </nav>
     </header>
+    
     {% with messages = get_flashed_messages() %}
     {% if messages %}
         <ul class="flashes">
@@ -21,8 +129,12 @@
         </ul>
     {% endif %}
     {% endwith %}
-    {% block content %}
-    <p>Witaj w aplikacji Movie Watchlist! Przejdź do zakładki "Lista filmów", aby zarządzać swoją kolekcją.</p>
-    {% endblock %}
+    
+    <div class="content-box">
+        {% block content %}
+        <h2 style="margin-top: 0;">Witaj w aplikacji Movie Watchlist!</h2>
+        <p>Przejdź do zakładki <strong>Lista filmów</strong>, aby zarządzać swoją kolekcją, dodawać nowe tytuły z bazy OMDb i odhaczać to, co już obejrzałeś.</p>
+        {% endblock %}
+    </div>
 </body>
 </html>

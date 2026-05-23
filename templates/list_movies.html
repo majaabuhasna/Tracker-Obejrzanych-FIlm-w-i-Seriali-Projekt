@@ -1,44 +1,52 @@
 {% extends "index.html" %}
 {% block title %}Watchlist - Lista filmów{% endblock %}
 {% block content %}
-<h2>Twoja Lista Filmów</h2>
-<a href="{{ url_for('web.add_movie') }}">Dodaj nowy film</a><br>
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+    <h2 style="margin: 0;">Twoja Lista Filmów</h2>
+    <a href="{{ url_for('web.add_movie') }}">
+        <button style="background: #27ae60;">Dodaj nowy film ➕</button>
+    </a>
+</div>
 
 {% if movies|length == 0 %}
-<h3>Brak filmów na Twojej liście. Wyszukaj coś powyżej!</h3>
+<div style="text-align: center; padding: 40px 0; color: #7f8c8d;">
+    <h3>Brak filmów na Twojej liście.</h3>
+    <p>Kliknij przycisk powyżej, aby wyszukać pierwszy film!</p>
+</div>
 {% else %}
-    <ul style="list-style-type: none; padding: 0; margin: 0;">
+    <div>
         {% for movie in movies %}
-        <li style="margin-bottom: 25px; border-bottom: 1px solid #eee; padding-bottom: 15px;">
+        <div class="movie-card">
             {% if movie["poster_url"] and movie["poster_url"] != "N/A" %}
-                <img src="{{ movie['poster_url'] }}" alt="Plakat {{ movie['title'] }}" style="width: 80px; height: auto; float: left; margin-right: 15px; border-radius: 4px;" />
+                <img src="{{ movie['poster_url'] }}" alt="Plakat {{ movie['title'] }}" style="width: 80px; height: 120px; object-fit: cover; border-radius: 6px; margin-right: 20px;" />
             {% endif %}
             
-            <div style="overflow: hidden;">
-                <h3 style="margin: 0 0 5px 0;">
-                    <a href="{{ url_for('web.movie', movie_id=movie['id']) }}">{{ movie["title"] }}</a> 
-                    <span style="color: #666; font-weight: normal;">({{ movie["year"] }})</span>
+            <div style="flex-grow: 1;">
+                <h3 style="margin: 0 0 5px 0; font-size: 20px;">
+                    <a href="{{ url_for('web.movie', movie_id=movie['id']) }}" style="color: #2c3e50; text-decoration: none;">{{ movie["title"] }}</a> 
+                    <span style="color: #95a5a6; font-weight: 300; font-size: 16px;">({{ movie["year"] }})</span>
                 </h3>
-                <p style="margin: 0 0 10px 0;">
+                <p style="margin: 0 0 15px 0; font-size: 14px;">
                     Status: 
                     {% if movie["is_watched"] == 1 %}
-                        <span style="color: green;">✔ Obejrzany</span>
+                        <span style="color: #27ae60; font-weight: 600; background: #e8f8f5; padding: 3px 8px; border-radius: 12px;">✔ Obejrzany</span>
                     {% else %}
-                        <span style="color: orange;">✖ Do obejrzenia</span>
+                        <span style="color: #e67e22; font-weight: 600; background: #fdf2e9; padding: 3px 8px; border-radius: 12px;">✖ Do obejrzenia</span>
                     {% endif %}
                 </p>
                 
-                <form method="post" action="{{ url_for('web.update_movies_status', movie_id=movie['id']) }}" style="display: inline;">
-                    <input type="hidden" name="view_name" value="list_movies" />
-                    <button type="submit">Zmień status</button>
-                </form>
-                <form method="post" action="{{ url_for('web.delete_movie', movie_id=movie['id']) }}" style="display: inline; margin-left: 10px;">
-                    <button type="submit" onclick="return confirm('Czy na pewno chcesz usunąć ten film?');">Usuń</button>
-                </form>
+                <div>
+                    <form method="post" action="{{ url_for('web.update_movies_status', movie_id=movie['id']) }}" style="display: inline;">
+                        <input type="hidden" name="view_name" value="list_movies" />
+                        <button type="submit" style="background: #f39c12; font-size: 13px; padding: 6px 12px;">Zmień status</button>
+                    </form>
+                    <form method="post" action="{{ url_for('web.delete_movie', movie_id=movie['id']) }}" style="display: inline; margin-left: 5px;">
+                        <button type="submit" onclick="return confirm('Czy na pewno chcesz usunąć ten film?');" style="background: #e74c3c; font-size: 13px; padding: 6px 12px;">Usuń</button>
+                    </form>
+                </div>
             </div>
-            <div style="clear: both;"></div>
-        </li>
+        </div>
         {% endfor %}
-    </ul>
+    </div>
 {% endif %}
 {% endblock %}
