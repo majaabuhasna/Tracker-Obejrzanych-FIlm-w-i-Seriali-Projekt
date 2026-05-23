@@ -38,11 +38,21 @@ def add_movie():
             return render_template("add_movie.html", title=title)
         
         api_key = "ea92e9f7"
-        url = f"http://www.omdbapi.com/?t={title}&apikey={api_key}"
-        response = requests.get(url).json()
+        url = "https://www.omdbapi.com/"
+        
+        # Przekazujemy parametry w słowniku, co automatycznie naprawia problem ze spacjami w tytule
+        params = {
+            "t": title,
+            "apikey": api_key
+        }
+        
+        # Używamy https:// i przekazujemy params
+        response = requests.get(url, params=params).json()
 
         if response.get("Response") == "False":
-            flash("Nie znaleziono takiego filmu w bazie OMDb.")
+            # Wyciągamy dokładny komunikat błędu z samego OMDb
+            error_message = response.get("Error", "Błąd ze strony zewnętrznego api")
+            flash(f"Błąd API: {error_message}")
             return render_template("add_movie.html", title=title)
 
         real_title = response.get("Title")
