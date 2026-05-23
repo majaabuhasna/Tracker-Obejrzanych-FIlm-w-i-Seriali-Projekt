@@ -33,7 +33,7 @@ def movie(movie_id):
 def add_movie():
     if request.method == "POST":
         title = request.form.get("title")
-        if not title or len(title).strip() < 2:
+        if not title or len(title.strip()) < 2:
             flash("Tytuł filmu musi mieć przynajmniej 2 znaki.")
             return render_template("add_movie.html", title=title)
         
