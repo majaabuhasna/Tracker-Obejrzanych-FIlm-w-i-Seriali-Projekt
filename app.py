@@ -1,13 +1,13 @@
 from flask import Flask, g
 import secrets
 from db import get_db
-#from api.routes import api
-#from web.routes import web
+from api.routes import api
+from web.routes import web
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = secrets.token_urlsafe(16)
-#app.register_blueprint(api, url_prefix="/api")
-#app.register_blueprint(web)
+app.register_blueprint(api, url_prefix="/api")
+app.register_blueprint(web)
 
 SCHEMA_SQL = """
 CREATE TABLE IF NOT EXISTS movies(
