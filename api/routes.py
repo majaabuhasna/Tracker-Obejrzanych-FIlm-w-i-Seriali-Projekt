@@ -31,7 +31,6 @@ def api_movies_add():
     if len(title) < 2:
         abort(400, description="Title has to have at least 2 chars.")
         
-    # --- UŻYCIE TWOJEGO KLUCZA API ---
     api_key = "ea92e9f7"
     url = f"http://www.omdbapi.com/?t={title}&apikey={api_key}"
     response = requests.get(url).json()

@@ -40,28 +40,22 @@ def add_movie():
         api_key = "ea92e9f7"
         url = "https://www.omdbapi.com/"
         
-        # Przekazujemy parametry w słowniku, co automatycznie naprawia problem ze spacjami w tytule
         params = {
             "t": title,
             "apikey": api_key
         }
         
-        # Używamy https:// i przekazujemy params
         response = requests.get(url, params=params).json()
 
         if response.get("Response") == "False":
-            # Pobieramy oryginalny komunikat po angielsku
             error_english = response.get("Error", "Nieznany błąd")
             
-            # Nasz mały słownik tłumaczeń
             translations = {
                 "Movie not found!": "Nie znaleziono filmu!",
                 "Invalid API key!": "Nieprawidłowy klucz API!",
                 "Too many results.": "Zbyt wiele wyników. Podaj dokładniejszy tytuł."
             }
             
-            # Szukamy tłumaczenia. Jeśli wystąpi jakiś nietypowy błąd spoza listy, 
-            # aplikacja awaryjnie wyświetli oryginał (error_english).
             error_polish = translations.get(error_english, error_english)
             
             flash(f"Błąd API: {error_polish}")
@@ -93,7 +87,7 @@ def update_movies_status(movie_id):
     view_name = request.form.get("view_name")
     flash("Zaktualizowano status filmu.")
     
-    if view_name == "task": # jeśli zmieniono status będąc w karcie szczegółów filmu
+    if view_name == "task":
         return redirect(url_for("web.movie", movie_id=movie_id))
     return redirect(url_for("web.list_movies"))
 
