@@ -1,0 +1,14 @@
+{% extends "index.html" %}
+{% block title %}Watchlist - Wyszukaj i dodaj film{% endblock %}
+{% block content %}
+<h2>Dodaj nowy film do kolekcji</h2>
+<p>Wpisz tytuł filmu. Aplikacja automatycznie pobierze szczegóły oraz plakat z serwisu OMDb.</p>
+
+<form method="post">
+    <input type="text" name="title" placeholder="Wyszukaj np. Shrek, Interstellar..." value="{{ title if title else '' }}" required style="width: 250px; padding: 5px;" />
+    <button type="submit">Pobierz i dodaj</button>
+</form>
+
+<br />
+<a href="{{ url_for('web.list_movies') }}">Anuluj i wróć</a>
+{% endblock %}

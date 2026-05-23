@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Movie Watchlist{% endblock %}</title>
+</head>
+<body>
+    <header>
+        <h1>Movie Watchlist 🎬</h1>
+        <a href="{{ url_for('web.index') }}">Home</a>
+        <a href="{{ url_for('web.ping_db') }}">Test Bazy (Ping)</a>
+        <a href="{{ url_for('web.list_movies') }}">Lista filmów</a>
+    </header>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <ul class="flashes">
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+    {% endwith %}
+    {% block content %}
+    <p>Witaj w aplikacji Movie Watchlist! Przejdź do zakładki "Lista filmów", aby zarządzać swoją kolekcją.</p>
+    {% endblock %}
+</body>
+</html>

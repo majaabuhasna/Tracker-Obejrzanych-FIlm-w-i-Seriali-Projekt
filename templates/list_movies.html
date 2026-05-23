@@ -1,0 +1,44 @@
+{% extends "index.html" %}
+{% block title %}Watchlist - Lista filmów{% endblock %}
+{% block content %}
+<h2>Twoja Lista Filmów</h2>
+<a href="{{ url_for('web.add_movie') }}">Dodaj nowy film 🎬</a>
+
+{% if movies|length == 0 %}
+<h3>Brak filmów na Twojej liście. Wyszukaj coś powyżej!</h3>
+{% else %}
+    <ul style="list-style-type: none; padding: 0; margin: 0;">
+        {% for movie in movies %}
+        <li style="margin-bottom: 25px; border-bottom: 1px solid #eee; padding-bottom: 15px;">
+            {% if movie["poster_url"] and movie["poster_url"] != "N/A" %}
+                <img src="{{ movie['poster_url'] }}" alt="Plakat {{ movie['title'] }}" style="width: 80px; height: auto; float: left; margin-right: 15px; border-radius: 4px;" />
+            {% endif %}
+            
+            <div style="overflow: hidden;">
+                <h3 style="margin: 0 0 5px 0;">
+                    <a href="{{ url_for('web.movie', movie_id=movie['id']) }}">{{ movie["title"] }}</a> 
+                    <span style="color: #666; font-weight: normal;">({{ movie["year"] }})</span>
+                </h3>
+                <p style="margin: 0 0 10px 0;">
+                    Status: 
+                    {% if movie["is_watched"] == 1 %}
+                        <span style="color: green;">✔ Obejrzany</span>
+                    {% else %}
+                        <span style="color: orange;">✖ Do obejrzenia</span>
+                    {% endif %}
+                </p>
+                
+                <form method="post" action="{{ url_for('web.update_movies_status', movie_id=movie['id']) }}" style="display: inline;">
+                    <input type="hidden" name="view_name" value="list_movies" />
+                    <button type="submit">Zmień status</button>
+                </form>
+                <form method="post" action="{{ url_for('web.delete_movie', movie_id=movie['id']) }}" style="display: inline; margin-left: 10px;">
+                    <button type="submit" onclick="return confirm('Czy na pewno chcesz usunąć ten film?');">Usuń</button>
+                </form>
+            </div>
+            <div style="clear: both;"></div>
+        </li>
+        {% endfor %}
+    </ul>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "index.html" %}
+{% block title %}Watchlist - {{ movie["title"] }}{% endblock %}
+{% block content %}
+<h2>{{ movie["title"] }}</h2>
+<p><strong>Rok produkcji:</strong> {{ movie["year"] }}</p>
+
+{% if movie["poster_url"] and movie["poster_url"] != "N/A" %}
+    <img src="{{ movie['poster_url'] }}" alt="Plakat {{ movie['title'] }}" style="max-width: 250px; height: auto; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" /><br /><br />
+{% endif %}
+
+<p>
+    <strong>Status:</strong> 
+    {% if movie["is_watched"] == 1 %}
+        <span style="color: green; font-weight: bold;">✔ Obejrzany</span>
+    {% else %}
+        <span style="color: orange; font-weight: bold;">✖ Planuję obejrzeć</span>
+    {% endif %}
+</p>
+<p><small>Zapisano w bazie: {{ movie["created_at"] }}</small></p>
+
+<form method="post" action="{{ url_for('web.update_movies_status', movie_id=movie['id']) }}" style="display: inline;">
+    <input type="hidden" name="view_name" value="task" />
+    <button type="submit">Zmień status</button>
+</form>
+<form method="post" action="{{ url_for('web.delete_movie', movie_id=movie['id']) }}" style="display: inline; margin-left: 10px;">
+    <button type="submit" onclick="return confirm('Usunąć ten film z bazy?');">Usuń z biblioteki</button>
+</form>
+
+<br /><br />
+<a href="{{ url_for('web.list_movies') }}">← Powrót do listy filmów</a>
+{% endblock %}

@@ -18,31 +18,32 @@ def ping_db():
 def list_movies():
     db = get_db()
     movies = db.execute("SELECT id, title, year, poster_url, is_watched, created_at FROM movies ORDER BY created_at DESC").fetchall()
-    # Zwracamy pod nazwą "tasks", żeby stary szablon HTML działał bez zmian
-    return render_template("list_tasks.html", tasks=movies)
+    return render_template("list_movies.html", movies=movies)
 
 @web.route("/movie/<int:movie_id>")
 def movie(movie_id):
     db = get_db()
     movie_data = db.execute("SELECT id, title, year, poster_url, is_watched, created_at FROM movies WHERE id = ?", [movie_id]).fetchone()
-    return render_template("task.html", task=movie_data)
+    if movie_data is None:
+        flash("Nie znaleziono takiego filmu w bazie danych.")
+        return redirect(url_for("web.list_movies"))
+    return render_template("movie_details.html", movie=movie_data)
 
 @web.route("/add_movie",  methods=["GET", "POST"])
 def add_movie():
     if request.method == "POST":
         title = request.form.get("title")
-        if len(title) < 2:
-            flash("Tytuł musi mieć przynajmniej 2 znaki.")
-            return render_template("add_task.html", title=title)
+        if not title or len(title).strip() < 2:
+            flash("Tytuł filmu musi mieć przynajmniej 2 znaki.")
+            return render_template("add_movie.html", title=title)
         
-        # --- UŻYCIE TWOJEGO KLUCZA API ---
         api_key = "ea92e9f7"
         url = f"http://www.omdbapi.com/?t={title}&apikey={api_key}"
         response = requests.get(url).json()
 
         if response.get("Response") == "False":
             flash("Nie znaleziono takiego filmu w bazie OMDb.")
-            return render_template("add_task.html", title=title)
+            return render_template("add_movie.html", title=title)
 
         real_title = response.get("Title")
         year = response.get("Year")
@@ -52,24 +53,26 @@ def add_movie():
         existing_movie = db.execute("SELECT id FROM movies WHERE title LIKE ?", [real_title]).fetchone()
         if existing_movie:
             flash("Ten film jest już na Twojej liście.")
-            return render_template("add_task.html", title=title)
+            return render_template("add_movie.html", title=title)
 
         db.execute("INSERT INTO movies(title, year, poster_url, is_watched) VALUES (?, ?, ?, ?)", [real_title, year, poster_url, 0])
         db.commit()
-        flash("Film został dodany pomyślnie.")
+        flash(f"Pomyślnie dodano film: {real_title}!")
         return redirect(url_for("web.list_movies"))
         
-    return render_template("add_task.html")
+    return render_template("add_movie.html")
 
 @web.route("/movies/<int:movie_id>/status", methods=["POST"])
 def update_movies_status(movie_id):
     db = get_db()
     db.execute("UPDATE movies SET is_watched = NOT is_watched WHERE id = ?", [movie_id])
     db.commit()
+    
     view_name = request.form.get("view_name")
     flash("Zaktualizowano status filmu.")
-    if view_name == "task":
-        return redirect(url_for("web.movie", movie_id = movie_id))
+    
+    if view_name == "task": # jeśli zmieniono status będąc w karcie szczegółów filmu
+        return redirect(url_for("web.movie", movie_id=movie_id))
     return redirect(url_for("web.list_movies"))
 
 @web.route("/movies/<int:movie_id>/delete", methods=["POST"])
