@@ -41,7 +41,15 @@
                         <button type="submit" style="background: #f39c12; font-size: 13px; padding: 6px 12px;">Zmień status</button>
                     </form>
                     <form method="post" action="{{ url_for('web.delete_movie', movie_id=movie['id']) }}" style="display: inline; margin-left: 5px;">
-                        <button type="submit" onclick="return confirm('Czy na pewno chcesz usunąć ten film?');" style="background: #e74c3c; font-size: 13px; padding: 6px 12px;">Usuń</button>
+                    <div id="btn-delete-{{ movie.id }}" style="display: inline-block;">
+                        <button type="button" onclick="document.getElementById('btn-delete-{{ movie.id }}').style.display='none'; document.getElementById('confirm-delete-{{ movie.id }}').style.display='inline-block';" style="background: #e74c3c; font-size: 13px; padding: 6px 12px;">Usuń</button>
+                    </div>
+                    
+                    <div id="confirm-delete-{{ movie.id }}" style="display: none; background: #fce4e4; padding: 8px 14px; border-radius: 8px; vertical-align: middle;">
+                        <span style="font-size: 13px; color: #c0392b; font-weight: 600; margin-right: 8px;">Na pewno?</span>
+                        <button type="submit" style="background: #c0392b; font-size: 13px; padding: 6px 12px;">Tak</button>
+                        <button type="button" onclick="document.getElementById('confirm-delete-{{ movie.id }}').style.display='none'; document.getElementById('btn-delete-{{ movie.id }}').style.display='inline-block';" style="background: #95a5a6; font-size: 13px; padding: 6px 12px;">Anuluj</button>
+                    </div>
                     </form>
                 </div>
             </div>

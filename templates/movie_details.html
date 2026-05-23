@@ -23,7 +23,15 @@
     <button type="submit">Zmień status</button>
 </form>
 <form method="post" action="{{ url_for('web.delete_movie', movie_id=movie['id']) }}" style="display: inline; margin-left: 10px;">
-    <button type="submit" onclick="return confirm('Usunąć ten film z bazy?');">Usuń z biblioteki</button>
+    <div id="btn-delete-detail" style="display: inline-block;">
+        <button type="button" onclick="document.getElementById('btn-delete-detail').style.display='none'; document.getElementById('confirm-delete-detail').style.display='inline-block';" style="background: #e74c3c;">Usuń z biblioteki</button>
+    </div>
+    
+    <div id="confirm-delete-detail" style="display: none; background: #fce4e4; padding: 5px 10px; border-radius: 6px; vertical-align: middle;">
+        <span style="color: #c0392b; font-weight: 600; margin-right: 10px;">Czy na pewno usunąć?</span>
+        <button type="submit" style="background: #c0392b;">Tak, usuń</button>
+        <button type="button" onclick="document.getElementById('confirm-delete-detail').style.display='none'; document.getElementById('btn-delete-detail').style.display='inline-block';" style="background: #95a5a6;">Anuluj</button>
+    </div>
 </form>
 
 <br /><br />
