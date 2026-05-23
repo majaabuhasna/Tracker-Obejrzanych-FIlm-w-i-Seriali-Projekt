@@ -46,9 +46,8 @@ def seed_db_command():
     if howManyMovies == 0:
         db.executemany("INSERT INTO movies(title, year, poster_url, is_watched) VALUES (?, ?, ?, ?)",
                        [
-                           ["Inception", "2010", "https://image.tmdb.org/t/p/w500/oYuLEt3zVCKq57qu2F8dT7NIa6f.jpg", 1], 
-                           ["The Matrix", "1999", "https://image.tmdb.org/t/p/w500/f89U3ADr1oiB1s9GkdPOEpXUk5H.jpg", 0], 
-                           ["Interstellar", "2014", "https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MvrId5cB.jpg", 0]
+                           ["Inception", "2010", "https://image.tmdb.org/t/p/w500/oYuLEt3zVCKq57qu2F8dT7NIa6f.jpg", 1],
+                           ["The Matrix", "1999", "https://image.tmdb.org/t/p/w500/f89U3ADr1oiB1s9GkdPOEpXUk5H.jpg", 0]
                        ])
         db.commit()
         print("✔ Dane przykładowe zostały dodane do tabeli movies.")

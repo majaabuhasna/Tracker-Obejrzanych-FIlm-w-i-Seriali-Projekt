@@ -2,7 +2,7 @@
 {% block title %}Watchlist - Lista filmów{% endblock %}
 {% block content %}
 <h2>Twoja Lista Filmów</h2>
-<a href="{{ url_for('web.add_movie') }}">Dodaj nowy film 🎬</a>
+<a href="{{ url_for('web.add_movie') }}">Dodaj nowy film</a><br>
 
 {% if movies|length == 0 %}
 <h3>Brak filmów na Twojej liście. Wyszukaj coś powyżej!</h3>
