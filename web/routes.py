@@ -50,9 +50,21 @@ def add_movie():
         response = requests.get(url, params=params).json()
 
         if response.get("Response") == "False":
-            # Wyciągamy dokładny komunikat błędu z samego OMDb
-            error_message = response.get("Error", "Nieznany błąd")
-            flash(f"Błąd API: {error_message}")
+            # Pobieramy oryginalny komunikat po angielsku
+            error_english = response.get("Error", "Nieznany błąd")
+            
+            # Nasz mały słownik tłumaczeń
+            translations = {
+                "Movie not found!": "Nie znaleziono filmu!",
+                "Invalid API key!": "Nieprawidłowy klucz API!",
+                "Too many results.": "Zbyt wiele wyników. Podaj dokładniejszy tytuł."
+            }
+            
+            # Szukamy tłumaczenia. Jeśli wystąpi jakiś nietypowy błąd spoza listy, 
+            # aplikacja awaryjnie wyświetli oryginał (error_english).
+            error_polish = translations.get(error_english, error_english)
+            
+            flash(f"Błąd API: {error_polish}")
             return render_template("add_movie.html", title=title)
 
         real_title = response.get("Title")
