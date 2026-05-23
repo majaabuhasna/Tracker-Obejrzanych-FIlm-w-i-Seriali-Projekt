@@ -51,7 +51,7 @@ def add_movie():
 
         if response.get("Response") == "False":
             # Wyciągamy dokładny komunikat błędu z samego OMDb
-            error_message = response.get("Error", "Błąd ze strony zewnętrznego api")
+            error_message = response.get("Error", "Nieznany błąd")
             flash(f"Błąd API: {error_message}")
             return render_template("add_movie.html", title=title)
 
