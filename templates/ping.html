@@ -1,0 +1,7 @@
+{% extends "index.html" %}
+{% block title %}Watchlist - Ping Bazy{% endblock %}
+{% block content %}
+<p style="color:green; font-weight:bold;">✔ Połączenie z bazą filmów działa poprawnie!</p>
+<br />
+<a href="{{ url_for('web.list_movies') }}">Przejdź do swojej listy</a>
+{% endblock %}
